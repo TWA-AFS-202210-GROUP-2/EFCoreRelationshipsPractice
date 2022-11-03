@@ -73,6 +73,57 @@ namespace EFCoreRelationshipsPracticeTest.CompanyServiceTest
             Assert.Equal("IBM", returnCompany.Name);
         }
 
+        [Fact]
+        public async void Should_get_all_companies_success_via_company_service()
+        {
+            // given
+            var context = GetCompanyDbContext();
+            CompanyDto companyDto = new CompanyDto
+            {
+                Name = "IBM",
+                EmployeeDtos = new List<EmployeeDto>()
+                {
+                    new EmployeeDto()
+                    {
+                        Name = "Tom",
+                        Age = 19,
+                    },
+                },
+                ProfileDto = new ProfileDto()
+                {
+                    RegisteredCapital = 100010,
+                    CertId = "100",
+                },
+            };
+
+            CompanyDto companyDto2 = new CompanyDto
+            {
+                Name = "MS",
+                EmployeeDtos = new List<EmployeeDto>()
+                {
+                    new EmployeeDto()
+                    {
+                        Name = "Jerry",
+                        Age = 18,
+                    },
+                },
+                ProfileDto = new ProfileDto()
+                {
+                    RegisteredCapital = 100020,
+                    CertId = "101",
+                },
+            };
+
+            CompanyService companyService = new CompanyService(context);
+            // when
+            await companyService.AddCompany(companyDto);
+            await companyService.AddCompany(companyDto2);
+            var returnCompanies = await companyService.GetAll();
+            // then
+            Assert.Equal(2, returnCompanies.Count());
+            Assert.Equal("IBM", returnCompanies[0].Name);
+        }
+
         private CompanyDbContext GetCompanyDbContext()
         {
             var scope = Factory.Services.CreateScope();
