@@ -20,17 +20,24 @@ namespace EFCoreRelationshipsPractice.Services
         {
             var companies = companyDbContext.Companies.ToList();
 
-            companies.Select(CompanyEntity => new CompanyDto(CompanyEntity)).ToList();
+            return companies.Select(CompanyEntity => new CompanyDto(CompanyEntity)).ToList();
 
-            throw new NotImplementedException();
-        }
-
-        public async Task<CompanyDto> GetById(long id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<int> AddCompany(CompanyDto companyDto)
+        {
+            // convert dto to entity
+            CompanyEntity companyEntity = companyDto.ToEntity();
+
+            // save entity to db
+            await companyDbContext.Companies.AddAsync(companyEntity);
+            await companyDbContext.SaveChangesAsync();
+
+            // return company id
+            return companyEntity.Id;
+        }
+
+        public async Task<CompanyDto> GetById(long id)
         {
             throw new NotImplementedException();
         }
