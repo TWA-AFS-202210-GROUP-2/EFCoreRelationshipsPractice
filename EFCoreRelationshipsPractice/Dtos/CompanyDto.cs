@@ -26,7 +26,7 @@ namespace EFCoreRelationshipsPractice.Dtos
             {
                 Name = this.Name,
                 Profile = this.ProfileDto?.ToEntity(),
-                //Employees = this.EmployeeDtos?.Select(EmployeeDto => EmployeeDto);
+                Employees = this.Employees?.Select(employeeDto => employeeDto.ToEntity()).ToList()
             };
         }
 

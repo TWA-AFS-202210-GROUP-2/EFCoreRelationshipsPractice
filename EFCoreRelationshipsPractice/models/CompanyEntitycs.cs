@@ -11,6 +11,6 @@
         public string Name { get; set; }
         public ProfileEntity? Profile { get; internal set; }
 
-        public List<EmployeeEntity>? employees { get; set; }
+        public List<EmployeeEntity>? Employees { get; set; }
     }
 }
