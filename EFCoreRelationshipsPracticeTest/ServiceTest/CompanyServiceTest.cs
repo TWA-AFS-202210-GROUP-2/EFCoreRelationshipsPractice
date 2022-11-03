@@ -96,8 +96,8 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
             var context = GetCompanyDbContext();
             //when
             CompanyService companyService = new CompanyService(context);
-            companyService.AddCompany(companyDto1);
-            companyService.AddCompany(companyDto2);
+            await companyService.AddCompany(companyDto1);
+            await companyService.AddCompany(companyDto2);
             //then
             Assert.Equal(2, companyService.GetAll().Result.Count);
         }
@@ -125,7 +125,7 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
             };
             var context = GetCompanyDbContext();
             CompanyService companyService = new CompanyService(context);
-            companyService.AddCompany(companyDto);
+            await companyService.AddCompany(companyDto);
             //when
             var company = companyService.GetById(1);
             //then
@@ -155,9 +155,9 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
             };
             var context = GetCompanyDbContext();
             CompanyService companyService = new CompanyService(context);
-            companyService.AddCompany(companyDto);
+            await companyService.AddCompany(companyDto);
             //when
-            companyService.DeleteCompany(1);
+            await companyService.DeleteCompany(1);
             //then
             Assert.Equal(0, context.CompanyEntities.Count());
         }
