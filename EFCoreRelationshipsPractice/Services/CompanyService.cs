@@ -25,8 +25,10 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<CompanyDto> GetById(int id)
         {
-            var company = companyDbContext.CompanyEntities.FindAsync(id);
-            return new CompanyDto(await company);
+            var company = companyDbContext.CompanyEntities
+                .Include(e=>e.Profile)
+                .Include(e=>e.Employees).FirstOrDefault(e=>e.Id == id);
+            return new CompanyDto(company);
         }
 
         public async Task<int> AddCompany(CompanyDto companyDto)
@@ -41,9 +43,15 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task DeleteCompany(int id)
         {
-            var company = await companyDbContext.CompanyEntities.FindAsync(id);
-            company.Employees.Select(item => companyDbC);
+            
+            var company = await companyDbContext.CompanyEntities.Include(entity => entity.Profile).Include(entity => entity.Employees).FirstAsync(i=>i.Id == id);
+            company.Employees.Select(item=>
+            {
+                return companyDbContext.EmployeeEntities.Remove(item);
+                companyDbContext.SaveChanges();
+            });
             companyDbContext.CompanyEntities.Remove(company);
+            await companyDbContext.SaveChangesAsync();
         }
     }
 }
