@@ -9,6 +9,8 @@
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public ProfileEntity Profile { get; internal set; }
+        public ProfileEntity? Profile { get; internal set; }
+
+        public List<EmployeeEntity>? employees { get; set; }
     }
 }

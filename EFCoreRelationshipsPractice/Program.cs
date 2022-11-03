@@ -1,4 +1,5 @@
 using EFCoreRelationshipsPractice.Repository;
+using EFCoreRelationshipsPractice.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<CompanyDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("Default");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+builder.Services.AddScoped<CompanyService>();
 
 var app = builder.Build();
 
