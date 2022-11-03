@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EFCoreRelationshipsPractice.Dtos;
 using EFCoreRelationshipsPractice.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreRelationshipsPractice.Services
 {
@@ -18,7 +19,7 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<List<CompanyDto>> GetAll()
         {
-            var companies = companyDbContext.CompanyEntities.ToList();
+            var companies = companyDbContext.CompanyEntities.Include(entity => entity.Profile).ToList();
             return companies.Select(e => new CompanyDto(e)).ToList();
         }
 

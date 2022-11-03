@@ -11,5 +11,6 @@ namespace EFCoreRelationshipsPractice.Repository
         }
 
         public DbSet<CompanyEntity> CompanyEntities { get; set; }
+        public DbSet<ProfileEntity> ProfileEntities { get; set; }
     }
 }
