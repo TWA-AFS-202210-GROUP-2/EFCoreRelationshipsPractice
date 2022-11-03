@@ -29,7 +29,12 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<int> AddCompany(CompanyDto companyDto)
         {
-            throw new NotImplementedException();
+            //1 convert dto to entity
+            //2 save to db context
+            var companyEntity = companyDto.ToEntity();
+            companyDbContext.CompanyEntities.AddAsync(companyEntity);
+            companyDbContext.SaveChanges();
+            return companyEntity.Id;
         }
 
         public async Task DeleteCompany(int id)
