@@ -54,5 +54,16 @@ namespace EFCoreRelationshipsPractice.Services
             await companyDbContext.SaveChangesAsync();
 
         }
+
+        public async Task<CompanyDto> GetById(int id)
+        {
+            var foundCompany = companyDbContext.Companies
+                .Include(company => company.Employee)
+                .Include(company => company.Profile)
+                .FirstOrDefault(_ => _.Id == id);
+
+            return new CompanyDto(foundCompany);
+
+        }
     }
 }
