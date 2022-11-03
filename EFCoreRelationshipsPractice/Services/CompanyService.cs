@@ -18,6 +18,10 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<List<CompanyDto>> GetAll()
         {
+            var companies = companyDbContext.Companies.ToList();
+
+            companies.Select(CompanyEntity => new CompanyDto(CompanyEntity)).ToList();
+
             throw new NotImplementedException();
         }
 

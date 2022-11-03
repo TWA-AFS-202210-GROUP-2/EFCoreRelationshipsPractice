@@ -8,5 +8,12 @@ namespace EFCoreRelationshipsPractice.Repository
             : base(options)
         {
         }
+
+        public DbSet<CompanyEntity> Companies
+        {
+            get;
+            set;
+        }
+
     }
 }
