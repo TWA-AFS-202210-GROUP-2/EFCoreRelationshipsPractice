@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EFCoreRelationshipsPractice.Dtos;
 using EFCoreRelationshipsPractice.Model;
 using EFCoreRelationshipsPractice.Repository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreRelationshipsPractice.Services
@@ -44,7 +45,13 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task DeleteCompany(int id)
         {
-            throw new NotImplementedException();
+            var foundCompany = companyDbContext.Companies
+                .Include(company => company.Employees)
+                .Include(company => company.Profile)
+                .FirstOrDefault(company => company.Id == id);
+
+            companyDbContext.Companies.Remove(foundCompany);
+            await companyDbContext.SaveChangesAsync();
         }
     }
 }
