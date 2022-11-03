@@ -16,13 +16,12 @@ namespace EFCoreRelationshipsPracticeTest.CompanyServiceTest
         public CompanyServiceTest(CustomWebApplicationFactory<Program> factory)
             : base(factory)
         {
-
         }
 
         [Fact]
         public async void Should_create_company_success_via_company_service()
         {
-            //given
+            // given
             var context = GetCompanyDbContext();
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
@@ -40,10 +39,38 @@ namespace EFCoreRelationshipsPracticeTest.CompanyServiceTest
                 CertId = "100",
             };
             CompanyService companyService = new CompanyService(context);
-            //when
+            // when
             await companyService.AddCompany(companyDto);
-            //then
+            // then
             Assert.Equal(1, context.Companies.Count());
+        }
+
+        [Fact]
+        public async void Should_get_company_success_via_company_service()
+        {
+            // given
+            var context = GetCompanyDbContext();
+            CompanyDto companyDto = new CompanyDto();
+            companyDto.Name = "IBM";
+            companyDto.EmployeeDtos = new List<EmployeeDto>
+            {
+                new EmployeeDto()
+                {
+                    Name = "Tom",
+                    Age = 19,
+                },
+            };
+            companyDto.ProfileDto = new ProfileDto()
+            {
+                RegisteredCapital = 100010,
+                CertId = "100",
+            };
+            CompanyService companyService = new CompanyService(context);
+            // when
+            var createdCompanyId = await companyService.AddCompany(companyDto);
+            var returnCompany = await companyService.GetById(createdCompanyId);
+            // then
+            Assert.Equal("IBM", returnCompany.Name);
         }
 
         private CompanyDbContext GetCompanyDbContext()
