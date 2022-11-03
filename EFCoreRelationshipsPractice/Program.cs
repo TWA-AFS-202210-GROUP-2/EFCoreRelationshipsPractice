@@ -27,6 +27,10 @@ using(var scope = app.Services.CreateScope())
     {
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
+        if (context.Database.IsRelational())
+        {
+            context.Database.Migrate(); 
+        }
     }
 }
 

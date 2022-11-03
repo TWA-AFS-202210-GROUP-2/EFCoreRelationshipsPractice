@@ -38,11 +38,6 @@ namespace EFCoreRelationshipsPractice.Services
             return companyEntity.Id;
         }
 
-        public async Task<CompanyDto> GetById(long id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteCompany(int id)
         {
             var foundCompany = companyDbContext.Companies
