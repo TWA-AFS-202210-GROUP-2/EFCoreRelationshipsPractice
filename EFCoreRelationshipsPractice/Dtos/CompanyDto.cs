@@ -12,21 +12,28 @@ namespace EFCoreRelationshipsPractice.Dtos
         public CompanyDto(CompanyEntity companyEntity)
         {
             Name = companyEntity.Name;
+            if(companyEntity.Profile != null)
+            {
+                ProfileDto = new ProfileDto(companyEntity.Profile);
+            }
+            else
+            {
+                ProfileDto = null;
+            }
         }
 
         public string Name { get; set; }
 
-        public ProfileDto? Profile { get; set; }
+        public ProfileDto? ProfileDto { get; set; }
 
         public List<EmployeeDto>? Employees { get; set; }
 
         public CompanyEntity ToEntity()
         {
-            return new CompanyEntity() 
-            { 
-                Name = Name, 
-                /*Profile = Profile,
-                Employees = Employees */
+            return new CompanyEntity()
+            {
+                Name = Name,
+                Profile = this.ProfileDto?.ToEntity()
             };
         }
     }

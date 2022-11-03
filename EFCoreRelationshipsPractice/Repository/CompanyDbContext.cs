@@ -10,7 +10,13 @@ namespace EFCoreRelationshipsPractice.Repository
         {
         }
 
+        //Companies表
         public DbSet<CompanyEntity> Companies
+        {
+            get;
+            set;
+        }
+        public DbSet<ProfileEntity> Profiles 
         {
             get;
             set;
