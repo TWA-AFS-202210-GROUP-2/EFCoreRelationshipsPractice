@@ -157,9 +157,9 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
             CompanyService companyService = new CompanyService(context);
             companyService.AddCompany(companyDto);
             //when
-
+            companyService.DeleteCompany(1);
             //then
-            Assert.Equal(1, context.CompanyEntities.Count());
+            Assert.Equal(0, context.CompanyEntities.Count());
         }
     }
 }
