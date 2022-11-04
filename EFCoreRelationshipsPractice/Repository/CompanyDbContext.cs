@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFCoreRelationshipsPractice.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreRelationshipsPractice.Repository
 {
@@ -8,5 +9,10 @@ namespace EFCoreRelationshipsPractice.Repository
             : base(options)
         {
         }
+        public DbSet<CompanyEntity> Companies { get; set; }
+
+        public DbSet<ProfileEntity> profiles { get; set; }
+
+        public DbSet<EmployeeEntity> Employee { get; set; }
     }
 }
