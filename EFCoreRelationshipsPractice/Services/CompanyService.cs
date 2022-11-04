@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EFCoreRelationshipsPractice.Dtos;
 using EFCoreRelationshipsPractice.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreRelationshipsPractice.Services
 {
@@ -18,22 +19,46 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<List<CompanyDto>> GetAll()
         {
-            throw new NotImplementedException();
-        }
+            var companies = companyDbContext.Companies.Include(company => company.Profile).Include(company => company.Employee).ToList();
 
-        public async Task<CompanyDto> GetById(long id)
-        {
-            throw new NotImplementedException();
+            return companies.Select(CompanyEntity => new CompanyDto(CompanyEntity)).ToList();
+
         }
 
         public async Task<int> AddCompany(CompanyDto companyDto)
         {
-            throw new NotImplementedException();
+            // convert dto to entity
+            CompanyEntity companyEntity = companyDto.ToEntity();
+
+            // save entity to db
+            await companyDbContext.Companies.AddAsync(companyEntity);
+            await companyDbContext.SaveChangesAsync();
+
+            // return company id
+            return companyEntity.Id;
         }
 
         public async Task DeleteCompany(int id)
         {
-            throw new NotImplementedException();
+            var foundCompany = companyDbContext.Companies
+                .Include(company => company.Employee)
+                .Include(company => company.Profile)
+                .FirstOrDefault(_ => _.Id == id);
+
+            companyDbContext.Companies.Remove(foundCompany);
+            await companyDbContext.SaveChangesAsync();
+
+        }
+
+        public async Task<CompanyDto> GetById(int id)
+        {
+            var foundCompany = companyDbContext.Companies
+                .Include(company => company.Employee)
+                .Include(company => company.Profile)
+                .FirstOrDefault(_ => _.Id == id);
+
+            return new CompanyDto(foundCompany);
+
         }
     }
 }
