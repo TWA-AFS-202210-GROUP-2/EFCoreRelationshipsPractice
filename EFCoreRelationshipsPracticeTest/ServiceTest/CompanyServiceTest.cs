@@ -48,12 +48,16 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
                 },
             };
             var context = GetCompanyDbContext();
+            CleanUp(context);
             //when
             CompanyService companyService = new CompanyService(context);
             companyService.AddCompany(companyDto);
             //then
             Assert.Equal(1,context.CompanyEntities.Count());
         }
+
+       
+
         [Fact]
         public async Task Should_return_all_companies_when_getall()
         {
@@ -94,6 +98,7 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
                 },
             };
             var context = GetCompanyDbContext();
+            CleanUp(context);
             //when
             CompanyService companyService = new CompanyService(context);
             await companyService.AddCompany(companyDto1);
@@ -124,6 +129,7 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
                 },
             };
             var context = GetCompanyDbContext();
+            CleanUp(context);
             CompanyService companyService = new CompanyService(context);
             await companyService.AddCompany(companyDto);
             //when
@@ -154,12 +160,20 @@ namespace EFCoreRelationshipsPracticeTest.ServiceTest
                 },
             };
             var context = GetCompanyDbContext();
+            CleanUp(context);
             CompanyService companyService = new CompanyService(context);
             await companyService.AddCompany(companyDto);
             //when
             await companyService.DeleteCompany(1);
             //then
             Assert.Equal(0, context.CompanyEntities.Count());
+        }
+        private static void CleanUp(CompanyDbContext context)
+        {
+            context.EmployeeEntities.RemoveRange(context.EmployeeEntities);
+            context.CompanyEntities.RemoveRange(context.CompanyEntities);
+            context.ProfileEntities.RemoveRange(context.ProfileEntities);
+            context.SaveChanges();
         }
     }
 }
