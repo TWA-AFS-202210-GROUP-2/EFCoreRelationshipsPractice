@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EFCoreRelationshipsPractice.Dtos;
 using EFCoreRelationshipsPractice.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreRelationshipsPractice.Services
 {
@@ -18,22 +19,39 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<List<CompanyDto>> GetAll()
         {
-            throw new NotImplementedException();
+            var companies = companyDbContext.CompanyEntities.Include(entity=> entity.Profile).Include(entity=>entity.Employees).ToList();
+            return companies.Select(e => new CompanyDto(e)).ToList();
         }
 
-        public async Task<CompanyDto> GetById(long id)
+        public async Task<CompanyDto> GetById(int id)
         {
-            throw new NotImplementedException();
+            var company = companyDbContext.CompanyEntities
+                .Include(e=>e.Profile)
+                .Include(e=>e.Employees).FirstOrDefault(e=>e.Id == id);
+            return new CompanyDto(company);
         }
 
         public async Task<int> AddCompany(CompanyDto companyDto)
         {
-            throw new NotImplementedException();
+            //1 convert dto to entity
+            //2 save to db context
+            var companyEntity = companyDto.ToEntity();
+            companyDbContext.CompanyEntities.AddAsync(companyEntity);
+            companyDbContext.SaveChanges();
+            return companyEntity.Id;
         }
 
         public async Task DeleteCompany(int id)
         {
-            throw new NotImplementedException();
+            
+            var company = await companyDbContext.CompanyEntities.Include(entity => entity.Profile).Include(entity => entity.Employees).FirstAsync(i=>i.Id == id);
+            company.Employees.Select(item=>
+            {
+                return companyDbContext.EmployeeEntities.Remove(item);
+                companyDbContext.SaveChanges();
+            });
+            companyDbContext.CompanyEntities.Remove(company);
+            await companyDbContext.SaveChangesAsync();
         }
     }
 }
